@@ -14,10 +14,10 @@ $app->get('/', function() use($twig) {
 $app->post('/', function() use($app, $twig) {
 
     $regNumber = $app->request->post('regNumber');
-
-    if ($regNumber) {
+    echo $twig->render('result.html');
+    /*if ($regNumber) {
         // запрос к базе
-    }
+    }*/
 
 
 
