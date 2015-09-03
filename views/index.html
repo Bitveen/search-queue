@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/style/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h4 class="header__text">Государственное бюджетное учереждение социального обслуживания</h4>
+            <h3 class="header__text"><a class="header__link" href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">Предгорного комплексного центра социального обслуживания населения</a></h3>
+            <h3 class="header__text header__text_title">Поиск очереди на получение путевки</h3>
+        </header>
+        {% include 'form.html' %}
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>
