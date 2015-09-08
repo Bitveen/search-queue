@@ -6,37 +6,45 @@
             <h3 class="search-result__header-text">Результаты поиска</h3>
         </div>
         <div class="search-result__body">
-            <table class="search-result__table" cellspacing="0" cellpadding="5">
-                <thead>
-                    <tr>
-                        <td class="search-result__table-row search-result__table-row_no-right-border" rowspan="3">ID код клиента (регистрационный номер в журнале учета заявлений о предоставлении путевки на ребенка)</td>
-                    </tr>
-                    <tr>
-                        <td class="search-result__table-row search-result__table-row_no-bottom-border" colspan="7">Номер очередности по профилю заболевания</td>
-                    </tr>
-                    <tr>
-                        <td class="search-result__table-row search-result__table-row_no-right-border">Органы дыхания и ЛОР-органы</td>
-                        <td class="search-result__table-row search-result__table-row_no-right-border">Органы пищеварения</td>
-                        <td class="search-result__table-row search-result__table-row_no-right-border">Органы зрения</td>
-                        <td class="search-result__table-row search-result__table-row_no-right-border">Нервная система и опорно-двигательный аппарат</td>
-                        <td class="search-result__table-row search-result__table-row_no-right-border">Мочеполовая система</td>
-                        <td class="search-result__table-row search-result__table-row_no-right-border">Органы кровообращения</td>
-                        <td class="search-result__table-row">Аллергические заболевания кожи</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2</td>
-                        <td>3</td>
-                        <td>4</td>
-                        <td>5</td>
-                        <td>6</td>
-                        <td>7</td>
-                        <td>8</td>
-                    </tr>
-                </tbody>
-            </table>
+            {% if data.id %}
+                <table class="search-result__table" cellspacing="0" cellpadding="5">
+                    <thead>
+                        <tr>
+                            <td class="search-result__table-row search-result__table-row_no-right-border" rowspan="3">ID код клиента (регистрационный номер в журнале учета заявлений о предоставлении путевки на ребенка)</td>
+                        </tr>
+                        <tr>
+                            <td class="search-result__table-row search-result__table-row_no-bottom-border" colspan="7">Номер очередности по профилю заболевания</td>
+                        </tr>
+                        <tr>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">Органы дыхания и ЛОР-органы</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">Органы пищеварения</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">Органы зрения</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">Нервная система и опорно-двигательный аппарат</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">Мочеполовая система</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">Органы кровообращения</td>
+                            <td class="search-result__table-row">Аллергические заболевания кожи</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="search-result__result-row">
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.id}}</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.breath}}</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.digestion}}</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.sight}}</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.nervous_system}}</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.urogenital_system}}</td>
+                            <td class="search-result__table-row search-result__table-row_no-right-border">{{data.blood_circulation}}</td>
+                            <td class="search-result__table-row">{{data.skin_diseases}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endif %}
+
+            {% if not data.id %}
+                <p>Информация не найдена.</p>
+            {% endif %}
+
+
         </div>
     </div>
 {% endblock %}

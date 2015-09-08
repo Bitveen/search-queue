@@ -54,10 +54,11 @@ body {
     margin: 50px auto 0 auto;
 }
 .search-result__header {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 .search-result__body {
-
+    text-align: center;
 }
 .search-result__header-text {
     margin: 0;
@@ -71,12 +72,17 @@ body {
 }
 .search-result__table-row {
     border: 1px solid #ddd;
+    font-weight: bold;
 }
 .search-result__table-row_no-right-border {
     border-right: none;
 }
 .search-result__table-row_no-bottom-border {
     border-bottom: none;
+}
+.search-result__result-row {
+    font-weight: bold;
+    background-color: #f1f1f1;
 }
 
 .header {
@@ -95,4 +101,14 @@ body {
 }
 .header__link:hover {
     color: #1565C0;
+}
+.uploader {
+    text-align: center;
+    width: 500px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 50px auto;
+}
+.uploader__header {
+    margin: 0 0 15px 0;
 }
