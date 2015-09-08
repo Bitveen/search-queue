@@ -1,3 +1,25 @@
 {% extends 'index.html' %}
 {% block title %}Отдых и оздоровление детей - Поиск{% endblock %}
-{% block content %}{% endblock %}
+{% block content %}
+    <header class="header">
+        <h4 class="header__text">Государственное бюджетное учереждение социального обслуживания</h4>
+        <h3 class="header__text"><a class="header__link" href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">Предгорного комплексного центра социального обслуживания населения</a></h3>
+        <h3 class="header__text header__text_title">Поиск очереди на получение путевки</h3>
+    </header>
+    <div class="search-form">
+        <div class="search-form__header">
+            <p class="search-form__header-text">
+                На данной странице Вы можете узнать порядковый номер очереди на предоставление путевки на ребенка на санаторно-курортное лечение.
+            </p>
+            <p class="search-form__header-text">
+                Необходимо ввести <strong>регистрационный номер</strong> в журнале учета заявлений о предоставлении путевки на ребенка и нажать кнопку "Найти".
+            </p>
+        </div>
+        <form action="/" method="POST">
+            <div class="search-form__group">
+                <input autocomplete="off" type="text" name="regNumber" placeholder="Введите регистрационный номер" class="search-form__input">
+                <button type="submit" class="search-form__button">Найти</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,35 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Загрузка файлов</title>
-    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/style/style.css">
-</head>
-<body>
-    <div class="container">
+{% extends 'index.html' %}
+{% block title %}Загрузка файлов{% endblock %}
+{% block content %}
+    <div class="uploader">
+        <h3 class="uploader__header">Выберите файл для загрузки</h3>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="document">
+            <button type="submit">Загрузить</button>
+        </form>
 
-        <div class="uploader">
-            <h3 class="uploader__header">Выберите файл для загрузки</h3>
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="document">
-                <button type="submit">Загрузить</button>
-            </form>
-
-            {% if status == 0 %}
-            <p>Файл успешно загружен.</p>
-            {% endif %}
-
-            {% if status == 1 %}
-            <p>Вы не выбрали файл.</p>
-            {% endif %}
-
-            {% if status == 2 %}
-            <p>Неподходящий тип файла.</p>
-            {% endif %}
-        </div>
-
+        {% if status %}
+            <p>{{status}}</p>
+        {% endif %}
 
     </div>
-</body>
-</html>
+{% endblock %}

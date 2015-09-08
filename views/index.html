@@ -1,21 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
+    <meta name="description" content="Государственное бюджетное учереждение социального обслуживания Предгорного комплексного центра социального обслуживания населения. Поиск очереди на получение путевки.">
+    <meta name="keywords" content="Получение путевки, Предгорный комплексный центр">
     <title>{% block title %}{% endblock %}</title>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/style/style.css">
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h4 class="header__text">Государственное бюджетное учереждение социального обслуживания</h4>
-            <h3 class="header__text"><a class="header__link" href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">Предгорного комплексного центра социального обслуживания населения</a></h3>
-            <h3 class="header__text header__text_title">Поиск очереди на получение путевки</h3>
-        </header>
-        {% include 'form.html' %}
         {% block content %}{% endblock %}
     </div>
-
 </body>
 </html>

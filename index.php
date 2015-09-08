@@ -1,135 +1,53 @@
 <?php
 require 'vendor/autoload.php';
 
+$config = require_once 'config.php';
+
+/* функция для разбора и вставки записей в бд */
+function insertValues($result, mysqli $connection) {
+    $query = "";
+    foreach ($result as $item) {
+        $item = trim($item);
+        if ($item == '-') {
+            $query .= "NULL ";
+            continue;
+        }
+        $query .= "$item ";
+    }
+    $query = str_replace(' ', ',', trim($query));
+
+    $connection->query("INSERT INTO rest_data VALUES ($query)");
+}
+
+
 $app = new \Slim\Slim();
 $loader = new Twig_Loader_Filesystem(__DIR__.'/views');
 $twig = new Twig_Environment($loader, array(
-    'cache' => false
+    'cache' => './views/cache'
 ));
+
+
 
 $app->get('/', function() use($twig) {
     echo $twig->render('base.html');
 });
-
-$app->get('/upload', function() use($app, $twig) {
-    if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
-        $app->response->headers->set('WWW-Authenticate', 'Basic');
-        $app->response->status(401);
-        return $app->response();
-    }
-
-    if ($_SERVER['PHP_AUTH_USER'] == 'megauploader' && $_SERVER['PHP_AUTH_PW'] == 'givemeupload') {
-        echo $twig->render('upload.html', array('status' => -1));
-    }
-
-
-
-
-});
-
-$app->post('/upload', function() use($app, $twig) {
-
-    if (isset($_FILES['document']) && !empty($_FILES['document'])) {
-        // обработка CSV файла
-
-        if ($_FILES['document']['type'] == 'text/csv') {
-            $handler = fopen($_FILES['document']['tmp_name'], 'r');
-            $connection = new mysqli('localhost', 'root', 'root', 'search_q', '8889');
-
-            while ($result = fgetcsv($handler)) {
-                // первый элемент - айдишник
-                $id = $result[0];
-
-                //$action = 'Create';
-
-                $check = $connection->query("SELECT * FROM rest_data WHERE id=$id");
-
-                if ($check && $check->num_rows == 0) {
-                    //$action = 'Create';
-                    // 8 ячеек вставить
-
-                    $query = "";
-                    foreach ($result as $item) {
-                        $item = trim($item);
-                        if ($item == '-') {
-                            // записываем NULL
-                            $query .= "NULL ";
-                            continue;
-                        }
-                        $query .= "$item ";
-                    }
-                    $query = str_replace(' ', ',', trim($query));
-
-                    $connection->query("INSERT INTO rest_data VALUES ($query)");
-
-
-
-                } else if ($check && $check->num_rows == 1) {
-                    //$action = 'Update';
-
-                    $connection->query("DELETE FROM rest_data WHERE id=$id");
-
-                    $query = "";
-                    foreach ($result as $item) {
-                        $item = trim($item);
-                        if ($item == '-') {
-                            // записываем NULL
-                            $query .= "NULL ";
-                            continue;
-                        }
-                        $query .= "$item ";
-                    }
-                    $query = str_replace(' ', ',', trim($query));
-
-                    $connection->query("INSERT INTO rest_data VALUES ($query)");
-
-
-                }
-
-
-
-
-
-            }
-            $status = 0;
-        } else {
-
-            $status = 2;
-
-        }
-
-
-
-    } else {
-
-        $status = 1;
-
-    }
-
-    echo $twig->render('upload.html', array('status' => $status));
-
-
-});
-
-
-$app->post('/', function() use($app, $twig) {
+$app->post('/', function() use($app, $twig, $config) {
 
     $regNumber = $app->request->post('regNumber');
-
     $data = array();
 
     if (is_numeric($regNumber)) {
         try {
-            $connection = new mysqli('localhost', 'root', 'root', 'search_q', '8889');
+            $connection = new mysqli($config['host'], $config['db_user'], $config['db_password'], $config['db_name'], $config['port']);
 
             if (!$connection) {
-                throw new Exception('Ошибка подключения к базе данных.', 2);
+                throw new Exception('Ошибка подключения к базе данных.');
             }
 
             $stmt = $connection->prepare("SELECT * FROM rest_data WHERE id=?");
 
             if (!$stmt) {
-                throw new Exception('Ошибка создания подготовленного запроса', 3);
+                throw new Exception('Ошибка запроса.');
             }
 
             $stmt->bind_param("i", $regNumber);
@@ -144,25 +62,16 @@ $app->post('/', function() use($app, $twig) {
                 $data['urogenital_system'],
                 $data['blood_circulation'],
                 $data['skin_diseases']
-
             );
 
             $stmt->fetch();
             $stmt->close();
 
         } catch (Exception $e) {
-
-
+            echo $e->getMessage();
         }
 
     }
-
-
-
-
-
-
-
 
 
 
@@ -178,6 +87,84 @@ $app->post('/', function() use($app, $twig) {
 
 });
 
+
+
+$app->get('/upload', function() use($app, $twig, $config) {
+
+    if (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) {
+        $app->response->headers->set('WWW-Authenticate', 'Basic');
+        $app->response->status(401);
+        return $app->response();
+    }
+
+    if ($_SERVER['PHP_AUTH_USER'] === $config['auth_login'] && $_SERVER['PHP_AUTH_PW'] === $config['auth_password']) {
+        echo $twig->render('upload.html');
+    }
+
+});
+
+
+$app->post('/upload', function() use($app, $twig, $config) {
+
+    if (isset($_FILES['document'])) {
+
+        if ($_FILES['document']['type'] === 'text/csv') {
+            try {
+                $handler = fopen($_FILES['document']['tmp_name'], 'r');
+
+                if (!$handler) {
+                    throw new Exception('Невозможно открыть файл.');
+                }
+
+                $connection = new mysqli($config['host'], $config['db_user'], $config['db_password'], $config['db_name'], $config['port']);
+
+                if (!$connection) {
+                    throw new Exception('Невозможно установить связь с БД.');
+                }
+
+                while ($result = fgetcsv($handler)) {
+                    // первый элемент - айдишник
+
+                    if (count($result) != 8) {
+                        continue;
+                    }
+
+                    $id = $result[0];
+
+                    $check = $connection->query("SELECT * FROM rest_data WHERE id=$id");
+
+                    if ($check && $check->num_rows == 0) {
+
+                        insertValues($result, $connection);
+
+                    } else if ($check && $check->num_rows == 1) {
+
+                        $connection->query("DELETE FROM rest_data WHERE id=$id");
+
+                        insertValues($result, $connection);
+
+                    }
+
+                }
+
+
+
+            } catch (Exception $e) {
+                echo $e->getMessage();
+            }
+
+
+
+
+
+
+        }
+
+    }
+
+    echo $twig->render('upload.html', array('status' => 'Файл успешно загружен.'));
+
+});
 
 
 
