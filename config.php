@@ -7,8 +7,8 @@ return array(
     'db_password' => 'root',
     'db_name' => 'search_q',
 
-    'auth_login' => 'megauploader',
-    'auth_password' => 'givemeupload'
+    'auth_login' => 'testlogin',
+    'auth_password' => 'testpassword'
 );
 
 /*
