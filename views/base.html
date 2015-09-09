@@ -1,25 +1,50 @@
 {% extends 'index.html' %}
 {% block title %}Отдых и оздоровление детей - Поиск{% endblock %}
 {% block content %}
-    <header class="header">
-        <h4 class="header__text">Государственное бюджетное учереждение социального обслуживания</h4>
-        <h3 class="header__text"><a class="header__link" href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">Предгорного комплексного центра социального обслуживания населения</a></h3>
-        <h3 class="header__text header__text_title">Поиск очереди на получение путевки</h3>
-    </header>
-    <div class="search-form">
-        <div class="search-form__header">
-            <p class="search-form__header-text">
-                На данной странице Вы можете узнать порядковый номер очереди на предоставление путевки на ребенка на санаторно-курортное лечение.
-            </p>
-            <p class="search-form__header-text">
-                Необходимо ввести <strong>регистрационный номер</strong> в журнале учета заявлений о предоставлении путевки на ребенка и нажать кнопку "Найти".
-            </p>
+
+
+    <div class="header">
+        <div class="header__left">
+            <a class="header__link" href=http://www.minsoc26.ru/social/">Учредитель: министерство труда и социальной защиты населения Ставропольского края</a>
+            <p class="header__title">Государственное бюджетное учереждение социального обслуживания </p>
+            <h3 class="header__main-title"><a href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">«Предгорного комплексного центра социального обслуживания населения»</a></h3>
+            <small class="header__date">создан 22 октября 1993 года</small>
         </div>
-        <form action="/" method="POST">
-            <div class="search-form__group">
-                <input autocomplete="off" type="text" name="regNumber" placeholder="Введите регистрационный номер" class="search-form__input">
-                <button type="submit" class="search-form__button">Найти</button>
-            </div>
-        </form>
+        <div class="header__center">
+            <a href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">
+                <img src="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/wp-content/themes/terra-sp-GBU-Predgornyj-kompleksnyj-centr-socialnogo-obsluzhivaniya/img/sp-arms.png" alt="Герб муниципального образования">
+            </a>
+        </div>
+        <div class="header__right">
+            <address class="header__address">
+                357350, Ставропольский край, Предгорный район,
+                станица Ессентукская, ул. Набережная, д. 4а
+            </address>
+            <p class="header__contacts">Телефон/факс: 8(87961)2-23-10, Email: pr-cson@mail.ru</p>
+        </div>
     </div>
+
+
+    <div class="wrapper">
+        <div class="block-header">
+            <h3 class="block-header__text">Поиск очереди на получение путевки</h3>
+        </div>
+        <div class="search-form">
+            <div class="search-form__header">
+                <p class="search-form__header-text">
+                    На данной странице Вы можете узнать порядковый номер очереди на предоставление путевки на ребенка на санаторно-курортное лечение.
+                </p>
+                <p class="search-form__header-text">
+                    Необходимо ввести <strong>регистрационный номер</strong> в журнале учета заявлений о предоставлении путевки на ребенка и нажать кнопку "Найти".
+                </p>
+            </div>
+            <form action="/" method="POST">
+                <div class="search-form__group">
+                    <input autocomplete="off" type="text" name="regNumber" placeholder="Введите регистрационный номер" class="search-form__input">
+                    <button type="submit" class="search-form__button">Найти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 {% endblock %}

@@ -1,6 +1,30 @@
 {% extends 'index.html' %}
 {% block title %}Загрузка файлов{% endblock %}
 {% block content %}
+
+<div class="header">
+    <div class="header__left">
+        <a class="header__link" href=http://www.minsoc26.ru/social/">Учредитель: министерство труда и социальной защиты населения Ставропольского края</a>
+        <p class="header__title">Государственное бюджетное учереждение социального обслуживания </p>
+        <h3 class="header__main-title"><a href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">«Предгорного комплексного центра социального обслуживания населения»</a></h3>
+        <small class="header__date">создан 22 октября 1993 года</small>
+    </div>
+    <div class="header__center">
+        <a href="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/">
+            <img src="http://xn----etbcdwhsdeecmes8ewd.xn--p1ai/wp-content/themes/terra-sp-GBU-Predgornyj-kompleksnyj-centr-socialnogo-obsluzhivaniya/img/sp-arms.png" alt="Герб муниципального образования">
+        </a>
+    </div>
+    <div class="header__right">
+        <address class="header__address">
+            357350, Ставропольский край, Предгорный район,
+            станица Ессентукская, ул. Набережная, д. 4а
+        </address>
+        <p class="header__contacts">Телефон/факс: 8(87961)2-23-10, Email: pr-cson@mail.ru</p>
+    </div>
+</div>
+
+
+<div class="wrapper">
     <div class="uploader">
         <h3 class="uploader__header">Выберите файл для загрузки</h3>
         <form action="/upload" method="post" enctype="multipart/form-data">
@@ -9,8 +33,13 @@
         </form>
 
         {% if status %}
-            <p>{{status}}</p>
+        <p>{{status}}</p>
         {% endif %}
 
     </div>
+</div>
+
+
+
+
 {% endblock %}

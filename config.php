@@ -14,7 +14,7 @@ return array(
 /*
  *
  * CREATE TABLE rest_data (
-  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT UNSIGNED NOT NULL PRIMARY KEY,
   breath INT UNSIGNED,
   digestion INT UNSIGNED,
   sight INT UNSIGNED,

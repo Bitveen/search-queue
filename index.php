@@ -8,7 +8,7 @@ function insertValues($result, mysqli $connection) {
     $query = "";
     foreach ($result as $item) {
         $item = trim($item);
-        if ($item == '-') {
+        if (!$item) {
             $query .= "NULL ";
             continue;
         }
@@ -16,14 +16,17 @@ function insertValues($result, mysqli $connection) {
     }
     $query = str_replace(' ', ',', trim($query));
 
-    $connection->query("INSERT INTO rest_data VALUES ($query)");
+    if ($connection->query("INSERT INTO rest_data VALUES ($query)")) {
+        return true;
+    }
+    return false;
 }
 
 
 $app = new \Slim\Slim();
 $loader = new Twig_Loader_Filesystem(__DIR__.'/views');
 $twig = new Twig_Environment($loader, array(
-    'cache' => './views/cache'
+    'cache' => false //'./views/cache'
 ));
 
 
@@ -106,7 +109,7 @@ $app->get('/upload', function() use($app, $twig, $config) {
 
 $app->post('/upload', function() use($app, $twig, $config) {
 
-    if (isset($_FILES['document'])) {
+    if (isset($_FILES['document']) && !empty($_FILES['document']['name'])) {
 
         if ($_FILES['document']['type'] === 'text/csv') {
             try {
@@ -122,31 +125,26 @@ $app->post('/upload', function() use($app, $twig, $config) {
                     throw new Exception('Невозможно установить связь с БД.');
                 }
 
-                while ($result = fgetcsv($handler)) {
-                    // первый элемент - айдишник
+                $connection->query("DELETE FROM rest_data");
+
+                while ($result = fgetcsv($handler, null, ';')) {
 
                     if (count($result) != 8) {
                         continue;
                     }
 
-                    $id = $result[0];
-
-                    $check = $connection->query("SELECT * FROM rest_data WHERE id=$id");
-
-                    if ($check && $check->num_rows == 0) {
-
-                        insertValues($result, $connection);
-
-                    } else if ($check && $check->num_rows == 1) {
-
-                        $connection->query("DELETE FROM rest_data WHERE id=$id");
-
-                        insertValues($result, $connection);
-
+                    if (!is_numeric($result[0])) {
+                        continue;
                     }
 
+                    if (!insertValues($result, $connection)) {
+                        echo $twig->render('upload.html', array('status' => 'Ошибка при обработке файла.'));
+                        exit;
+                    }
                 }
 
+
+                echo $twig->render('upload.html', array('status' => 'Файл успешно загружен.'));
 
 
             } catch (Exception $e) {
@@ -154,15 +152,13 @@ $app->post('/upload', function() use($app, $twig, $config) {
             }
 
 
-
-
-
-
+        } else {
+            echo $twig->render('upload.html', array('status' => 'Неверный формат файла.'));
         }
 
+    } else {
+        echo $twig->render('upload.html');
     }
-
-    echo $twig->render('upload.html', array('status' => 'Файл успешно загружен.'));
 
 });
 
